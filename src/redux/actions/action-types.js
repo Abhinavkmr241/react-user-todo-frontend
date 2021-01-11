@@ -1,0 +1,5 @@
+export const ADD_USERDATA = 'ADD_USERDATA';
+export const REMOVE_USERDATA = 'REMOVE_USERDATA';
+ 
+export const SHOW_LOADER = 'SHOW_LOADER';
+export const HIDE_LOADER = 'HIDE_LOADER';
