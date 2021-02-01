@@ -222,4 +222,100 @@ export const makeDeleteRequest = async (
     }
   });
 };
+export const uploadFileMultiPart = async (
+  url,
+  attachToken = false,
+  formData
+) => {
+  let headers = {
+
+  };
+  if (attachToken) {
+    try {
+      const authToken = await getToken();
+      if (authToken) {
+        headers["Authorization"] = "Bearer " + authToken;
+      }
+    } catch (e) {
+      console.log("Error fetching auth token: ", e);
+    }
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: formData
+      })
+        .then(
+          res => res.json(),
+          error => {
+            reject(error);
+          }
+        )
+        .then(
+          jsonResponse => {
+            resolve(jsonResponse);
+          },
+          error => {
+            reject(error);
+          }
+        )
+        .catch(error => {
+          reject(error);
+        });
+    } catch (e) {
+      console.log(e);
+      reject();
+    }
+  });
+};
+export const updateFileMultiPart = async (
+  url,
+  attachToken = false,
+  formData
+) => {
+  let headers = {
+
+  };
+  if (attachToken) {
+    try {
+      const authToken = await getToken();
+      if (authToken) {
+        headers["Authorization"] = "Bearer " + authToken;
+      }
+    } catch (e) {
+      console.log("Error fetching auth token: ", e);
+    }
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      fetch(url, {
+        method: "PUT",
+        headers: headers,
+        body: formData
+      })
+        .then(
+          res => res.json(),
+          error => {
+            reject(error);
+          }
+        )
+        .then(
+          jsonResponse => {
+            resolve(jsonResponse);
+          },
+          error => {
+            reject(error);
+          }
+        )
+        .catch(error => {
+          reject(error);
+        });
+    } catch (e) {
+      console.log(e);
+      reject();
+    }
+  });
+};
 

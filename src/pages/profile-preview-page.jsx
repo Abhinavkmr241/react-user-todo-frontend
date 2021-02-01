@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { showLoader, hideLoader } from "../redux/actions/loader-data";
 import { ToastsStore } from "react-toasts";
 import { removeUser } from '../redux/actions/user-data';
-import { deleteUser, updateUser, userDetails } from '../http/http-calls';
+import { deleteUser, updateUser, userDetails, addUserImage, updateUserImage } from '../http/http-calls';
 
 class ProfilePreview extends Component {
 
@@ -19,7 +19,9 @@ class ProfilePreview extends Component {
         },
         errors: {},
         isActive: false,
-        userId: ''
+        userId: '',
+        selectedFile: '',
+        userImage: ''
     }
 
     componentDidMount() {
@@ -37,7 +39,8 @@ class ProfilePreview extends Component {
             };
             let isActive = resp.user.isActive;
             let userId = resp.user._id;
-            this.setState({ user, isActive, userId });
+            let userImage = resp.user._userImage[0];
+            this.setState({ user, isActive, userId, userImage });
         }).catch((err) => {
             this.props.hideLoader();
             ToastsStore.error("User details loading failed :- " + err.reason);
@@ -131,8 +134,37 @@ class ProfilePreview extends Component {
         });
     }
 
+    _uploadImage = (e) => {
+        this.setState({ selectedFile: e.target.files[0] }, () => {
+            if (this.state.userImage) {
+                const fd = new FormData();
+                fd.append('imageUser', this.state.selectedFile);
+                this.props.showLoader();
+                updateUserImage(fd, this.state.userImage._id).then((resp) => {
+                    this.props.hideLoader();
+                    console.log("Updating user image response here :- ", resp);
+                }).catch((err) => {
+                    this.props.hideLoader();
+                    ToastsStore.error("Updating user image failed :- " + err.reason);
+                });
+            } else {
+                const fd = new FormData();
+                fd.append('imageUser', this.state.selectedFile);
+                this.props.showLoader();
+                addUserImage(fd).then((resp) => {
+                    this.props.hideLoader();
+                    console.log("Adding user image response here :- ", resp);
+                }).catch((err) => {
+                    this.props.hideLoader();
+                    ToastsStore.error("Adding user image failed :- " + err.reason);
+                });
+            }
+        });
+        this._getUserDetails();
+    }
+
     render() {
-        const { user, errors, isActive } = this.state;
+        const { user, errors, isActive, userImage } = this.state;
         return (
             <div>
                 <Container>
@@ -142,6 +174,19 @@ class ProfilePreview extends Component {
                         <Col md="8">
                             <Card>
                                 <CardBody>
+                                    <h4 style={{ fontWeight: 600, marginBottom: 0 }}>Profile</h4>
+                                    <div className="text-center">
+                                        <Label className="btn uploadBtnProfile">
+                                            <input type="file" name='imageUser'
+                                                style={{ display: 'none' }}
+                                                onChange={(e) => this._uploadImage(e)}
+                                            />
+                                            {userImage ?
+                                                <img alt="" className="" src={`http://localhost:3000/uploads/${userImage.imageUser.filename}`} />
+                                                : <img alt="" className="" src={'assets/img/user-img-default.png'} />
+                                            }
+                                        </Label>
+                                    </div>
                                     <FormGroup>
                                         <Label>Name</Label>
                                         <Input type="text" value={user.name}

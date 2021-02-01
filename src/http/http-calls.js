@@ -1,5 +1,8 @@
-import config  from '../config';
-import { makePostRequest, makeGetRequest, makePutRequest, makeDeleteRequest } from './http-service';
+import config from '../config';
+import {
+  makePostRequest, makeGetRequest, makePutRequest,
+  makeDeleteRequest, uploadFileMultiPart, updateFileMultiPart
+} from './http-service';
 const BASE_URL = config.BASE_URL; // create a config.js to maintain the BASE_URL;
 
 export const signUp = signupData => {
@@ -79,10 +82,10 @@ export const updateUser = (userData, id) => {
     ).then(res => {
       resolve(res);
     })
-    .catch(e => {
-      console.log("API call error: ", e);
-      reject(e);
-    });
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
   });
 }
 
@@ -94,10 +97,10 @@ export const deleteUser = () => {
     ).then(res => {
       resolve(res);
     })
-    .catch(e => {
-      console.log("API call error: ", e);
-      reject(e);
-    });
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
   });
 }
 
@@ -159,9 +162,73 @@ export const deleteTodo = (id) => {
     ).then(res => {
       resolve(res);
     })
-    .catch(e => {
-      console.log("API call error: ", e);
-      reject(e);
-    });
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
+  });
+}
+
+export const addUserImage = (formdata) => {
+  return new Promise((resolve, reject) => {
+    uploadFileMultiPart(
+      BASE_URL + "/userImage",
+      true,
+      formdata
+    ).then(res => {
+      resolve(res);
+    })
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
+  });
+}
+
+export const updateUserImage = (formdata, id) => {
+  return new Promise((resolve, reject) => {
+    updateFileMultiPart(
+      BASE_URL + `/userImage/${id}`,
+      true,
+      formdata
+    ).then(res => {
+      resolve(res);
+    })
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
+  });
+}
+
+export const addTodoImages = (formdata, id) => {
+  return new Promise((resolve, reject) => {
+    uploadFileMultiPart(
+      BASE_URL + `/todoImages/${id}`,
+      true,
+      formdata
+    ).then(res => {
+      resolve(res);
+    })
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
+  });
+}
+
+export const updateTodoImages = (formdata, id) => {
+  return new Promise((resolve, reject) => {
+    updateFileMultiPart(
+      BASE_URL + `/todoImages/${id}`,
+      true,
+      formdata
+    ).then(res => {
+      resolve(res);
+    })
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
   });
 }

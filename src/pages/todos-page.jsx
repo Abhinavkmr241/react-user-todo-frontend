@@ -158,6 +158,31 @@ class Todos extends Component {
         <Container>
           <Row>
             <Col md="12">
+              <div className="profilePreviewWrap">
+                <div>
+                  <div className="text-center">
+                    <h5>{`Welcome ${this.state.userName}`}</h5>
+                  </div>
+                  <div className="mt-4">
+                    <FormGroup>
+                      <Label>Message</Label>
+                      <Input type="text" placeholder="Enter what to do..."
+                        value={this.state.message}
+                        onChange={(e) => this._handleOnChange(e.target.value)}
+                      />
+                    </FormGroup>
+                    <Button className="modalBtnSave"
+                      onClick={(e) => this._addTodo(e)}
+                    >
+                      Add
+                      </Button>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md="12">
               <div className="addedLinksWrapper">
                 <div className="d-flex justify-content-between align-items-center my-3">
                   <h4 className="pg-title">ToDos</h4>
@@ -165,7 +190,7 @@ class Todos extends Component {
 
                 <Card className="userDetails mb-4">
                   <CardBody>
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-around"}}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                       <div>
                         <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch"
                           label={this.state.marked ? "Unmark All" : "Mark All"}
@@ -197,28 +222,6 @@ class Todos extends Component {
                     {this._showTodoList(this.state.selectedType)}
                   </CardBody>
                 </Card>
-              </div>
-
-              <div className="profilePreviewWrap">
-                <div>
-                  <div className="text-center">
-                    <h5>{`Welcome ${this.state.userName}`}</h5>
-                  </div>
-                  <div className="mt-4">
-                    <FormGroup>
-                      <Label>Message</Label>
-                      <Input type="text" placeholder="Enter what to do..."
-                        value={this.state.message}
-                        onChange={(e) => this._handleOnChange(e.target.value)}
-                      />
-                      <Button className="modalBtnSave"
-                        onClick={(e) => this._addTodo(e)}
-                      >
-                        Add
-                      </Button>
-                    </FormGroup>
-                  </div>
-                </div>
               </div>
             </Col>
           </Row>
