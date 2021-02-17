@@ -143,6 +143,7 @@ class ProfilePreview extends Component {
                 updateUserImage(fd, this.state.userImage._id).then((resp) => {
                     this.props.hideLoader();
                     console.log("Updating user image response here :- ", resp);
+                    this._getUserDetails();
                 }).catch((err) => {
                     this.props.hideLoader();
                     ToastsStore.error("Updating user image failed :- " + err.reason);
@@ -154,13 +155,14 @@ class ProfilePreview extends Component {
                 addUserImage(fd).then((resp) => {
                     this.props.hideLoader();
                     console.log("Adding user image response here :- ", resp);
+                    this._getUserDetails();
+                    
                 }).catch((err) => {
                     this.props.hideLoader();
                     ToastsStore.error("Adding user image failed :- " + err.reason);
                 });
             }
         });
-        this._getUserDetails();
     }
 
     render() {
@@ -182,7 +184,8 @@ class ProfilePreview extends Component {
                                                 onChange={(e) => this._uploadImage(e)}
                                             />
                                             {userImage ?
-                                                <img alt="" className="" src={`http://localhost:3000/uploads/${userImage.imageUser.filename}`} />
+                                                <img alt="" className="" src={`data:image/jpeg;base64,${userImage.base64}`} />
+                                                // <img alt="" className="" src={`http://localhost:3000/uploads/${userImage.imageUser.filename}`} />
                                                 : <img alt="" className="" src={'assets/img/user-img-default.png'} />
                                             }
                                         </Label>

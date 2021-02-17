@@ -232,3 +232,18 @@ export const updateTodoImages = (formdata, id) => {
       });
   });
 }
+
+export const deleteTodoImage = (id) => {
+  return new Promise((resolve, reject) => {
+    makeDeleteRequest(
+      BASE_URL + `/todoImages/${id}`,
+      true
+    ).then(res => {
+      resolve(res);
+    })
+      .catch(e => {
+        console.log("API call error: ", e);
+        reject(e);
+      });
+  });
+}
